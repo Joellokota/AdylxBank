@@ -43,7 +43,6 @@ jobs:
         id: push
         uses: docker/build-push-action@v6
         with:
-          context: Build an image
           file: ./Dockerfile
           push: 'true'
           tags: app.jar
