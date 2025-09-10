@@ -1,0 +1,75 @@
+name: deploy the backend of a&pplication
+on:
+  push:
+    branches:
+      - main
+env:
+  MsbackImage: msbank
+jobs:
+  create-folder-of-deploy:
+    name: create folder of deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: execute ssh remote command to create folder for app
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            sudo mkdir -p /opt/applications/andy-alex/${{env.MsbackImage}}
+            sudo chmod 777 /opt/applications/andy-alex/${{env.MsbackImage}}
+            ls -al /opt/applications/andy-alex
+            sudo chmod 777 /opt/applications/andy-alex
+  generate-image-of-backend:
+    name: Generate Image of BackEnd
+    runs-on: ubuntu-latest
+    needs: ['create-folder-of-deploy']
+    steps:
+      - name: Before generate Docker Image we clone first my repo from Github
+        uses: actions/checkout@master
+      - name: To configure Java Set-Up for my app
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin' # See 'Supported distributions' for available options
+          java-version: '21'
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DCK_HUB_USERNAME }}
+          password: ${{ secrets.DCK_HUB_TOKEN }}
+      - name: Build and Push image to Docker Hub
+        id: push
+        uses: docker/build-push-action@v6
+        with:
+          context: Build an image
+          file: ./Dockerfile
+          push: 'true'
+          tags: app.jar
+          labels: joellokota/andy-alex-app
+  run-all-containers-of-microservices:
+    name: run container
+    runs-on: ubuntu-latest
+    needs: ['create-folder-of-deploy', 'generate-image-of-backend']
+    steps:
+      - name: To clone directory
+        uses: actions/checkout@master
+      - name: To copy file ssh compose.xml
+        uses: appleboy/scp-action@v1.0.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          port: ${{ secrets.PORT }}
+          source: "compose.yml"
+          target: /opt/applications/andy-alex
+      - name: executing command by docker and run container
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            sudo docker-compose -f /opt/applications/andy-alex/compose.yml up -d

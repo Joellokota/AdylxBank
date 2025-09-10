@@ -1,0 +1,13 @@
+services:
+  andy-alex-docker:
+    build: ./msbank
+    container_name: andy-alex-container
+    restart: always
+    environment:
+      - JAVA_TOOL_OPTIONS=-Xmx120000K
+    deploy:
+      resources:
+        limits:
+          memory: 800m
+    ports:
+      - '8899:8080'

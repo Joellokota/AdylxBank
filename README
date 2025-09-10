@@ -1,0 +1,33 @@
+## Objectif de cette application, permettre la gestion comptable des dépenses avec la possibilité de rajouter les fichiers dans l'application.
+
+## Penser à une application axée sur les trois technologies :
+### Springboot
+### Thymeleaf
+### Angular
+### Pipeline Github-Actions
+### Avec Docker
+### Avec l'intégration des serveurs MCP (Client & Serveur)
+
+### ---------------------------------------------------------------------
+
+## Déploiement avec Github Actions : Création d'un répertoire de workflow (required directory for process Github - Actions)
+## .github
+##    \workflow
+##       \deployment.yml
+
+### ----------------------------------------------------------------------
+
+## secrets.HOST : 92.222.180.184
+## secrets.USERNAME : ubuntu
+## secrets.PRIVATE_KEY : --> Clé privé dans  C:\Users\joell\.ssh\andyalex
+## secrets.PORT : 64024
+
+### ------------------------------------------------------------------------
+
+## To deploy by Docker :
+## We have to configure in pom.xml file our build-image plugin.
+## We have to execute our springboot:build-image goal and to generate a local our Image.
+## -->> mvn spring-boot:build-image
+## We need to execute our compose.yml docker run (by up command and in mode daemon)
+## -->> docker-compose -f compose.yml up -d
+

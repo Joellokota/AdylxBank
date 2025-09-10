@@ -74,6 +74,24 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+<!--                    <image>-->
+<!--                        <name>joellokota/andy-alex:${project.version}</name>-->
+<!--                        <buildpacks>-->
+<!--                            <buildpack>docker.io/paketobuildpacks/java-native-image</buildpack>-->
+<!--                            <buildpack>docker.io/paketobuildpacks/bellsoft-liberica:11.2.7</buildpack>-->
+<!--                        </buildpacks>-->
+<!--                        <env>-->
+<!--                            <BP_JVM_VERSION>21.0.8</BP_JVM_VERSION>-->
+<!--                            <BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>-->
+<!--                            <BP_JVM_TYPE>JDK</BP_JVM_TYPE>-->
+<!--                        </env>-->
+<!--                    </image>-->
+<!--                    <docker>-->
+<!--                        <publishRegistry>-->
+<!--                            <username>${docker.publishRegistry.username}</username>-->
+<!--                            <password>${docker.publishRegistry.password}</password>-->
+<!--                        </publishRegistry>-->
+<!--                    </docker>-->
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
