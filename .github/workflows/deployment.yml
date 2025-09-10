@@ -39,6 +39,15 @@ jobs:
         with:
           username: ${{ secrets.DCK_HUB_USERNAME }}
           password: ${{ secrets.DCK_HUB_TOKEN }}
+      - name: To copy file ssh compose.xml
+        uses: appleboy/scp-action@v1.0.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          port: ${{ secrets.PORT }}
+          source: "./msbank/Dockerfile"
+          target: /opt/applications/andy-alex
       - name: Build and Push image to Docker Hub
         id: push
         uses: docker/build-push-action@v6
